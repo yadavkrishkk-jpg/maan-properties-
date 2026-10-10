@@ -1,676 +1,178 @@
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#252525">
 <title>MAAN PROPERTIES | Real Estate</title>
-<meta name="description" content="Explore residential plots and real estate projects with MAAN PROPERTIES.">
-
+<meta name="description" content="Explore property opportunities with MAAN PROPERTIES. Contact us for residential and investment properties.">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <style>
-:root {
-  --gold: #b99856;
-  --gold-light: #e5d3a9;
-  --dark: #252525;
-  --muted: #737373;
-  --bg: #f8f8f6;
-  --border: #e8e5de;
-}
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  color: var(--dark);
-  background: #fff;
-  line-height: 1.6;
-}
-a { color: inherit; }
-button, input, textarea, select { font: inherit; }
-button, .btn { cursor: pointer; }
-.topbar {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background: rgba(255,255,255,.97);
-  border-bottom: 1px solid var(--border);
-  box-shadow: 0 3px 18px #00000008;
-}
-.header-inner {
-  max-width: 1200px;
-  margin: auto;
-  padding: 15px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-.brand {
-  font-size: 22px;
-  font-weight: 800;
-  letter-spacing: 1px;
-  text-decoration: none;
-  white-space: nowrap;
-}
-.brand span { color: var(--gold); }
-.nav {
-  display: flex;
-  gap: 22px;
-  align-items: center;
-}
-.nav a {
-  text-decoration: none;
-  color: #484848;
-  font-size: 14px;
-}
-.nav a:hover { color: var(--gold); }
-.actions {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  border: 1px solid var(--border);
-  padding: 10px 14px;
-  border-radius: 5px;
-  text-decoration: none;
-  color: var(--dark);
-  background: white;
-  font-size: 13px;
-  font-weight: 600;
-}
-.btn:hover { border-color: var(--gold); }
-.btn-gold {
-  background: var(--gold);
-  color: white;
-  border-color: var(--gold);
-}
-.btn-dark {
-  background: var(--dark);
-  color: white;
-  border-color: var(--dark);
-}
-.btn-small { padding: 7px 10px; }
-.hero {
-  background: var(--bg);
-  padding: 64px 24px;
-}
-.hero-inner {
-  max-width: 1152px;
-  margin: auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;
-  align-items: center;
-}
-.eyebrow {
-  color: #96763d;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-}
-h1 {
-  font-size: clamp(38px, 5vw, 62px);
-  line-height: 1.08;
-  letter-spacing: -1.8px;
-  margin: 16px 0;
-}
-h1 span { color: var(--gold); }
-p { color: var(--muted); }
-.hero p { max-width: 510px; font-size: 16px; }
-.hero-image {
-  width: 100%;
-  height: 380px;
-  object-fit: cover;
-  border-radius: 8px;
-  box-shadow: 0 18px 40px #00000012;
-}
-.hero-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 25px;
-}
-.section {
-  max-width: 1200px;
-  margin: auto;
-  padding: 65px 24px;
-}
-.section-heading { margin-bottom: 30px; }
-.section-heading h2 {
-  font-size: 32px;
-  margin: 7px 0;
-  letter-spacing: -.6px;
-}
-.heading-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: end;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-.project-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 22px;
-}
-.project-card {
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  overflow: hidden;
-  background: #fff;
-  transition: transform .2s, box-shadow .2s;
-}
-.project-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 28px #0000000b;
-}
-.project-card img {
-  width: 100%;
-  height: 205px;
-  object-fit: cover;
-  background: #eee;
-}
-.project-body { padding: 20px; }
-.project-tag {
-  color: #99783f;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1.4px;
-  text-transform: uppercase;
-}
-.project-body h3 { margin: 7px 0; font-size: 21px; }
-.project-body p { font-size: 14px; }
-.project-location { font-size: 13px; color: #555; }
-.project-actions {
-  display: flex;
-  gap: 7px;
-  flex-wrap: wrap;
-  margin-top: 14px;
-}
-.features {
-  background: var(--bg);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-}
-.features-inner {
-  max-width: 1152px;
-  margin: auto;
-  padding: 38px 24px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-}
-.feature { text-align: center; padding: 10px; }
-.feature-icon { color: var(--gold); font-size: 27px; }
-.feature strong { display: block; margin-top: 6px; }
-.contact-panel {
-  background: var(--dark);
-  color: white;
-  border-radius: 8px;
-  padding: 35px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-.contact-panel h2 { margin: 0; }
-.contact-panel p { color: #d1d1d1; }
-footer {
-  background: #1d1d1d;
-  color: white;
-  text-align: center;
-  padding: 35px 20px;
-}
-footer p { color: #ccc; font-size: 13px; }
-footer a { color: var(--gold-light); }
-.hidden { display: none !important; }
-.admin-area {
-  background: #f4f3ef;
-  border-top: 1px solid var(--border);
-  padding: 35px 20px;
-}
-.admin-inner { max-width: 900px; margin: auto; }
-.admin-box {
-  background: white;
-  border: 1px solid var(--border);
-  padding: 24px;
-  border-radius: 8px;
-  margin-top: 15px;
-}
-.field { margin-bottom: 15px; }
-.field label {
-  display: block;
-  font-weight: 600;
-  font-size: 13px;
-  margin-bottom: 6px;
-}
-.field input, .field textarea, .field select {
-  width: 100%;
-  border: 1px solid #d9d6ce;
-  border-radius: 5px;
-  padding: 12px;
-  background: white;
-}
-.field textarea { min-height: 85px; resize: vertical; }
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-}
-.notice {
-  padding: 12px;
-  background: #fff6df;
-  border: 1px solid #ead7a6;
-  border-radius: 5px;
-  font-size: 13px;
-  color: #66552f;
-}
-@media(max-width:850px) {
-  .header-inner { padding: 14px 18px; }
-  .nav { order: 3; width: 100%; gap: 18px; }
-  .hero-inner { gap: 25px; }
-  .hero-image { height: 300px; }
-  .project-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
-}
-@media(max-width:580px) {
-  .header-inner { gap: 12px; }
-  .brand { font-size: 19px; }
-  .actions { width: 100%; }
-  .actions .btn { flex: 1; padding: 9px 7px; font-size: 11px; }
-  .nav { justify-content: space-between; gap: 8px; }
-  .nav a { font-size: 12px; }
-  .hero { padding: 42px 19px; }
-  .hero-inner { grid-template-columns: 1fr; }
-  .hero-image { height: 230px; }
-  .section { padding: 45px 19px; }
-  .section-heading h2 { font-size: 27px; }
-  .project-grid { grid-template-columns: 1fr; }
-  .features-inner { grid-template-columns: repeat(2,1fr); padding: 25px 15px; }
-  .contact-panel { padding: 25px; }
-  .form-grid { grid-template-columns: 1fr; gap: 0; }
-}
+:root{--gold:#b99856;--gold-light:#e5d3a9;--dark:#252525;--muted:#737373;--bg:#f8f8f6;--border:#e8e5de;--white:#fff;--danger:#a52828}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--dark);background:var(--bg);line-height:1.6}button,input,textarea,select{font:inherit}button{cursor:pointer}a{color:inherit}.hidden{display:none!important}.topbar{position:sticky;top:0;z-index:10;background:#ffffffed;backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}.header-inner{max-width:1200px;margin:auto;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}.brand{font-size:22px;font-weight:800;letter-spacing:1px;text-decoration:none}.brand span{color:var(--gold)}nav{display:flex;gap:18px;align-items:center;flex-wrap:wrap}nav a{text-decoration:none;font-weight:600;font-size:14px}.btn{border:1px solid var(--border);border-radius:8px;background:white;padding:10px 15px;font-weight:700;color:var(--dark)}.btn:hover{filter:brightness(.97)}.btn-gold{background:var(--gold);color:white;border-color:var(--gold)}.btn-dark{background:var(--dark);color:white;border-color:var(--dark)}.hero{background:linear-gradient(110deg,#181818e8,#252525a8),url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1800&q=85') center/cover;min-height:480px;display:flex;align-items:center;color:white}.hero-inner{width:1200px;max-width:100%;margin:auto;padding:70px 24px}.eyebrow{text-transform:uppercase;letter-spacing:3px;color:var(--gold-light);font-weight:700;font-size:12px}.hero h1{font-size:clamp(36px,6vw,64px);line-height:1.08;max-width:720px;margin:14px 0}.hero p{max-width:620px;color:#eee;font-size:18px}.section{max-width:1200px;margin:auto;padding:58px 22px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:24px}.section h2{font-size:clamp(28px,4vw,38px);margin:0}.muted{color:var(--muted)}.project-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px}.project-card{background:white;border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 8px 24px #00000008}.project-card img{width:100%;height:220px;object-fit:cover;background:#e8e5de;display:block}.project-content{padding:18px}.project-content h3{margin:0 0 4px;font-size:21px}.location{color:var(--muted);font-size:14px}.price{font-weight:800;color:#8a6b2f;margin-top:10px}.description{white-space:pre-wrap}.empty{background:white;border:1px dashed #d3cec1;padding:32px;border-radius:12px;text-align:center;color:var(--muted)}.about-panel,.contact-panel{background:white;border:1px solid var(--border);border-radius:14px;padding:26px}.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}.contact-panel p{margin:8px 0}.footer{padding:25px 22px;background:var(--dark);color:#eee;text-align:center}.admin-tools{display:flex;gap:8px;flex-wrap:wrap}.admin-banner{background:#f1e8d4;border-bottom:1px solid #e0d0a9;padding:10px 22px;text-align:center;font-size:14px}.modal-backdrop{position:fixed;inset:0;background:#0009;z-index:30;display:flex;align-items:center;justify-content:center;padding:16px;overflow:auto}.modal{background:white;border-radius:14px;width:min(560px,100%);padding:24px;box-shadow:0 20px 70px #0005;max-height:94vh;overflow:auto}.modal h2{margin-top:0}.detail-image{width:100%;max-height:320px;object-fit:cover;border-radius:10px;margin:8px 0 14px;display:block}.detail-meta{margin:8px 0;color:var(--muted)}.detail-description{white-space:pre-wrap;margin:14px 0}.field{margin:12px 0}.field label{display:block;font-weight:700;font-size:14px;margin-bottom:5px}.field input,.field textarea{width:100%;padding:11px 12px;border:1px solid #d8d5cd;border-radius:8px;background:#fff}.field textarea{min-height:100px;resize:vertical}.map-search-row{display:flex;gap:8px}.map-search-row input{flex:1;min-width:0}#locationMap{height:300px;width:100%;border:1px solid var(--border);border-radius:10px;z-index:1}.map-coords{font-size:13px;color:var(--muted);margin-top:6px}.form-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.status{font-size:14px;margin-top:10px;white-space:pre-wrap}.status.error{color:var(--danger)}.status.success{color:#176b3a}.small{font-size:12px}.admin-card-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}.admin-card-actions button{padding:7px 10px;font-size:13px}@media(max-width:650px){.header-inner{padding:12px 15px}.brand{font-size:19px}nav{gap:12px}.hero{min-height:420px}.section{padding:42px 16px}.contact-grid{grid-template-columns:1fr}.hero-inner{padding:54px 18px}}
 </style>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-const SUPABASE_URL = "https://bhhptmzeniinvtcwuvfu.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_ZGEs96Mgejn1tRdCy7bnPA_STB7wFkT";
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
-</script>
 </head>
-
 <body>
 <header class="topbar">
   <div class="header-inner">
     <a class="brand" href="#home">MAAN <span>PROPERTIES</span></a>
-
-    <nav class="nav">
-      <a href="#home">Home</a>
-      <a href="#projects">Projects</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
+    <nav aria-label="Main navigation">
+      <a href="#home">Home</a><a href="#projects">Properties</a><a href="#about">About</a><a href="#contact">Contact</a>
+      <button class="btn" id="adminOpenBtn" type="button">Admin Login</button>
+      <button class="btn btn-gold hidden" id="dashboardBtn" type="button">Manage Properties</button>
+      <button class="btn hidden" id="logoutBtn" type="button">Log out</button>
     </nav>
-
-    <div class="actions">
-      <button class="btn" onclick="showAdmin()">Admin Login</button>
-      <button class="btn" onclick="showSettings()">⚙ Settings</button>
-      <button class="btn btn-gold" onclick="showUpload()">＋ Upload Project</button>
-    </div>
   </div>
 </header>
-
+<div id="adminBanner" class="admin-banner hidden">Admin mode is active. Changes you make here are saved to Supabase.</div>
 <main>
-<section class="hero" id="home">
-  <div class="hero-inner">
-    <div>
-      <div class="eyebrow">Your property journey starts here</div>
-      <h1>Find a place for your <span>future.</span></h1>
-      <p>Explore residential plots and property opportunities with MAAN PROPERTIES. Get clear project information and connect with our team directly.</p>
-      <div class="hero-buttons">
-        <a class="btn btn-dark" href="#projects">Explore Projects →</a>
-        <a class="btn btn-gold" href="https://wa.me/919893688819?text=Hello%20MAAN%20PROPERTIES%2C%20please%20share%20your%20project%20details.">WhatsApp Enquiry</a>
-      </div>
-    </div>
-    <img class="hero-image" src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=85" alt="Modern residential property">
-  </div>
-</section>
-
+<section class="hero" id="home"><div class="hero-inner">
+  <div class="eyebrow">Find your place. Build your future.</div>
+  <h1>Property choices for the life you want.</h1>
+  <p>Explore property opportunities with MAAN PROPERTIES. Contact our team for details, site visits, and availability.</p>
+  <a class="btn btn-gold" href="#projects" style="display:inline-block;text-decoration:none;margin-top:8px">Explore Properties</a>
+</div></section>
 <section class="section" id="projects">
-  <div class="heading-row">
-    <div class="section-heading">
-      <div class="eyebrow">Discover properties</div>
-      <h2>Our Projects</h2>
-      <p>Explore available properties and enquire for details.</p>
-    </div>
-  </div>
-  <div class="project-grid" id="projectGrid"></div>
+  <div class="section-head"><div><div class="eyebrow" style="color:#8a6b2f">Featured listings</div><h2>Our Properties</h2><div class="muted">Explore available projects and contact us for more details.</div></div>
+  <div id="adminProjectActions" class="admin-tools hidden"><button class="btn btn-gold" id="addProjectBtn" type="button">+ Add Property</button></div></div>
+  <div id="projectGrid" class="project-grid"><div class="empty">Loading properties…</div></div>
+  <p id="loadStatus" class="status muted" role="status"></p>
 </section>
-
-<section class="features" id="about">
-  <div class="features-inner">
-    <div class="feature"><div class="feature-icon">⌂</div><strong>Property Guidance</strong><p>Information to help you choose.</p></div>
-    <div class="feature"><div class="feature-icon">◎</div><strong>Location Details</strong><p>Understand the project location.</p></div>
-    <div class="feature"><div class="feature-icon">◇</div><strong>Project Information</strong><p>Ask us about availability.</p></div>
-    <div class="feature"><div class="feature-icon">↗</div><strong>Direct Enquiries</strong><p>Contact our team directly.</p></div>
-  </div>
+<section class="section" id="about"><div class="section-head"><div><div class="eyebrow" style="color:#8a6b2f">About us</div><h2>MAAN PROPERTIES</h2></div></div>
+  <div class="about-panel"><p>We help buyers explore property opportunities and connect with our team for information and site visits. Contact us to learn more about current availability.</p><p class="muted">Please confirm property details, approvals, pricing, and availability directly with our team before making a decision.</p></div>
 </section>
-
-<section class="section" id="contact">
-  <div class="contact-panel">
-    <div>
-      <div class="eyebrow">Let's talk</div>
-      <h2>Looking for a property?</h2>
-      <p>Contact MAAN PROPERTIES to learn about our projects.</p>
-      <p>Phone: 9893688819<br>Email: yogeshyadav5182@gmail.com</p>
-    </div>
-    <a class="btn btn-gold" href="https://wa.me/919893688819?text=Hello%20MAAN%20PROPERTIES">Chat on WhatsApp ↗</a>
-  </div>
+<section class="section" id="contact"><div class="section-head"><div><div class="eyebrow" style="color:#8a6b2f">Get in touch</div><h2>Contact Us</h2></div></div>
+  <div class="contact-grid"><div class="contact-panel"><h3>MAAN PROPERTIES</h3><p>📞 <a href="tel:+919893688819">9893688819</a></p><p>✉️ <a href="mailto:yogeshyadav5182@gmail.com">yogeshyadav5182@gmail.com</a></p><p>📍 Green Park Estate, Ganeshpura Road</p><a class="btn btn-gold" href="https://wa.me/919893688819" target="_blank" rel="noopener">Chat on WhatsApp</a></div>
+  <div class="contact-panel"><h3>Interested in a property?</h3><p>Call or message us to ask about availability, pricing, and site visits.</p><a class="btn btn-dark" href="tel:+919893688819">Call Now</a></div></div>
 </section>
 </main>
+<footer class="footer">© <span id="year"></span> MAAN PROPERTIES. All rights reserved.</footer>
 
-<section class="admin-area hidden" id="adminArea">
-  <div class="admin-inner">
-    <div class="eyebrow">Management preview</div>
-    <h2 id="adminHeading">Project Management</h2>
-    <div class="notice">
-      This is a browser-only demonstration. It does not provide secure administrator authentication or cloud storage. Do not use it to manage real customer data or expose confidential information.
-    </div>
-
-<div class="admin-box hidden" id="loginBox">
-  <h3>Admin Login</h3>
-  <form id="adminLoginForm">
-    <div class="field">
-      <label for="adminEmail">Email</label>
-      <input id="adminEmail" type="email" required placeholder="Admin email">
-    </div>
-    <div class="field">
-      <label for="adminPassword">Password</label>
-      <input id="adminPassword" type="password" required placeholder="Admin password">
-    </div>
-    <button class="btn btn-gold" type="submit">Log In</button>
-    <p id="loginMessage" role="status"></p>
-  </form>
-  <button class="btn" type="button" onclick="hideAdmin()">Close</button>
+<div id="loginModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+ <div class="modal"><div class="section-head"><h2 id="loginTitle">Admin Login</h2><button class="btn" type="button" data-close="loginModal">Close</button></div>
+ <p class="muted">Public visitors do not need to sign in. This login is only for the website administrator.</p>
+ <form id="loginForm"><div class="field"><label for="adminEmail">Admin email</label><input id="adminEmail" type="email" autocomplete="username" required></div><div class="field"><label for="adminPassword">Password</label><input id="adminPassword" type="password" autocomplete="current-password" required></div><button class="btn btn-gold" type="submit">Sign in securely</button><p id="loginStatus" class="status" role="status"></p></form>
+ </div>
 </div>
-    
-
-    <div class="admin-box hidden" id="settingsBox">
-      <h3>Website Settings</h3>
-      <p>MAAN PROPERTIES</p>
-      <p>Theme: White, Charcoal & Gold</p>
-      <p>Contact: 9893688819</p>
-      <p>Email: yogeshyadav5182@gmail.com</p>
-      <button class="btn" onclick="hideAdmin()">Close settings</button>
-    </div>
-
-    <div class="admin-box hidden" id="uploadBox">
-      <h3 id="formHeading">Add a Project</h3>
-      <form id="projectForm">
-        <input type="hidden" id="editId">
-        <div class="form-grid">
-          <div class="field">
-            <label for="projectName">Project Name *</label>
-            <input id="projectName" required placeholder="e.g. Green Park Estate">
-          </div>
-          <div class="field">
-            <label for="projectLocation">Location *</label>
-            <input id="projectLocation" required placeholder="Project location">
-          </div>
-        </div>
-        <div class="field">
-  <label for="projectImage">Property Photo</label>
-<input id="projectImage" type="file" accept="image/jpeg,image/png,image/webp">
-          <p id="photoUploadStatus" role="status"></p>
-        </div>
-        <div class="field">
-          <label for="projectDescription">Description</label>
-          <textarea id="projectDescription" placeholder="Describe the property and facilities"></textarea>
-        </div>
-        <div class="field">
-          <label for="projectPrice">Price / Price information</label>
-          <input id="projectPrice" placeholder="Contact for pricing">
-        </div>
-        <button class="btn btn-gold" type="submit">Save Project on This Device</button>
-        <button class="btn" type="button" onclick="resetForm()">Cancel</button>
-      </form>
-    </div>
-
-    <div class="admin-box">
-      <h3>Manage this device's project list</h3>
-      <p>Use Upload Project to add listings. Editing or deleting here only changes this browser's saved copy.</p>
-      <div id="manageList"></div>
-      <button class="btn" onclick="hideAdmin()">Close dashboard</button>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <a class="brand" href="#home">MAAN <span>PROPERTIES</span></a>
-  <p>Helping you find your next property opportunity.</p>
-  <p>Phone: 9893688819 · Email: yogeshyadav5182@gmail.com</p>
-  <p>© 2026 MAAN PROPERTIES. All rights reserved.</p>
-</footer>
-
+<div id="projectModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="projectModalTitle">
+ <div class="modal"><div class="section-head"><h2 id="projectModalTitle">Add Property</h2><button class="btn" type="button" data-close="projectModal">Close</button></div>
+ <form id="projectForm">
+  <input type="hidden" id="projectId">
+  <div class="field"><label for="projectName">Project name *</label><input id="projectName" required maxlength="120"></div>
+  <div class="field"><label for="projectLocation">Location *</label><input id="projectLocation" required maxlength="200"></div>
+  <div class="field"><label for="mapSearch">Find property on map</label><div class="map-search-row"><input id="mapSearch" placeholder="Search address or place"><button class="btn" id="mapSearchBtn" type="button">Search</button></div><p class="small muted">Search for a place, or tap the map to set the exact point.</p><div id="locationMap" aria-label="Select property location on map"></div><div id="mapCoordinates" class="map-coords">No map point selected yet.</div><button class="btn" id="clearMapLocation" type="button" style="margin-top:8px">Clear selected point</button><input type="hidden" id="projectLatitude"><input type="hidden" id="projectLongitude"></div>
+  <div class="field"><label for="projectPrice">Price / price information</label><input id="projectPrice" maxlength="120" placeholder="Contact for price"></div>
+  <div class="field"><label for="projectDescription">Description</label><textarea id="projectDescription" maxlength="3000"></textarea></div>
+  <div class="field"><label for="projectImage">Property photo (JPG, PNG, WebP; max 5 MB)</label><input id="projectImage" type="file" accept="image/jpeg,image/png,image/webp"><p class="small muted">Choose a photo to upload. If editing and no new photo is selected, the current photo is kept.</p></div>
+  <p id="projectStatus" class="status" role="status"></p>
+  <div class="form-actions"><button class="btn btn-gold" type="submit" id="saveProjectBtn">Save Property</button><button class="btn" type="button" data-close="projectModal">Cancel</button></div>
+ </form></div>
+</div>
+<div id="detailModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+ <div class="modal"><div class="section-head"><h2 id="detailTitle">Project Details</h2><button class="btn" type="button" data-close="detailModal">Close</button></div>
+ <div id="detailContent"></div>
+ <div class="form-actions"><a id="detailWhatsApp" class="btn btn-gold" href="#" target="_blank" rel="noopener" style="text-decoration:none">Contact about this project on WhatsApp</a><button class="btn" type="button" data-close="detailModal">Back to properties</button></div>
+ </div>
+</div>
 <script>
-const STORAGE_KEY = "maan_properties_projects_v1";
+/* CONFIG: The URL and publishable key are intended for browser use.
+   Never put a Supabase secret/service_role key in this file. */
+const SUPABASE_URL = "https://bhhptmzeniinvtcwuvfu.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_ZGEs96Mgejn1tRdCy7bnPA_STB7wFkT";
+const STORAGE_BUCKET = "Property-images";
+const TABLE_NAME = "projects";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
-const starterProjects = [
-  {
-    id: "green-park",
-    name: "Green Park Estate",
-    location: "Ganeshpura Road",
-    description: "Residential plots. Contact us for location details, facilities, availability and pricing.",
-    price: "Contact for pricing",
-    image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=900&q=80"
-  }
-];
+let isAdmin = false;
+let projects = [];
+let locationMap = null, locationMarker = null;
+const $ = id => document.getElementById(id);
+$("year").textContent = new Date().getFullYear();
 
-let projects = loadProjects();
-
-function loadProjects() {
-  try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    return saved ? JSON.parse(saved) : [...starterProjects];
-  } catch (error) {
-    return [...starterProjects];
-  }
+function setStatus(id, message, type="") {
+  const el = $(id); el.textContent = message; el.className = "status " + type;
 }
+function escapeHTML(value="") {
+  return String(value).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function openModal(id){ $(id).classList.remove("hidden"); }
+function closeModal(id){ $(id).classList.add("hidden"); }
+document.querySelectorAll("[data-close]").forEach(b => b.addEventListener("click",()=>closeModal(b.dataset.close)));
+$("adminOpenBtn").addEventListener("click",()=>{setStatus("loginStatus","");openModal("loginModal");});
+$("dashboardBtn").addEventListener("click",()=>{document.querySelector("#projects").scrollIntoView({behavior:"smooth"});});
+$("addProjectBtn").addEventListener("click",()=>openProjectForm());
+$("logoutBtn").addEventListener("click",async()=>{await supabaseClient.auth.signOut();});
 
-function saveProjects() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
-    return true;
-  } catch (error) {
-    alert("Could not save on this device. Check browser storage.");
-    return false;
+function updateAdminUI(session) {
+  isAdmin = !!session;
+  $("adminOpenBtn").classList.toggle("hidden",isAdmin);
+  $("dashboardBtn").classList.toggle("hidden",!isAdmin);
+  $("logoutBtn").classList.toggle("hidden",!isAdmin);
+  $("adminProjectActions").classList.toggle("hidden",!isAdmin);
+  $("adminBanner").classList.toggle("hidden",!isAdmin);
+}
+async function loadProjects() {
+  $("projectGrid").innerHTML = '<div class="empty">Loading properties…</div>';
+  const {data,error} = await supabaseClient.from(TABLE_NAME).select("*").order("created_at",{ascending:false});
+  if(error) {
+    projects=[];
+    $("projectGrid").innerHTML='<div class="empty">Property listings could not load yet.</div>';
+    setStatus("loadStatus","Supabase setup needed: "+error.message+" — follow the included setup instructions.","error");
+    return;
   }
+  projects=data||[];
+  setStatus("loadStatus",projects.length ? "" : "No properties have been added yet.");
+  renderProjects();
 }
-
-function safeText(value) {
-  return String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;",
-    '"': "&quot;", "'": "&#39;"
-  })[char]);
-}
-
 function renderProjects() {
-  const grid = document.getElementById("projectGrid");
-  if (!projects.length) {
-    grid.innerHTML = "<p>No projects have been added yet.</p>";
-    renderManageList();
-    return;
-  }
-
-  grid.innerHTML = projects.map(project => {
-    const name = safeText(project.name);
-    const location = safeText(project.location);
-    const description = safeText(project.description);
-    const price = safeText(project.price || "Contact for pricing");
-    const image = /^https?:\/\//i.test(project.image || "")
-      ? safeText(project.image)
-      : "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=900&q=80";
-
-    const message = encodeURIComponent("Hello MAAN PROPERTIES, I am interested in " + project.name + ".");
-    return `
-      <article class="project-card">
-        <img src="${image}" alt="${name}" loading="lazy">
-        <div class="project-body">
-          <div class="project-tag">Property Project</div>
-          <h3>${name}</h3>
-          <div class="project-location">⌖ ${location}</div>
-          <p>${description}</p>
-          <strong>${price}</strong>
-          <div class="project-actions">
-            <a class="btn btn-dark" href="https://wa.me/919893688819?text=${message}">Enquire now ↗</a>
-          </div>
-        </div>
-      </article>`;
+  const grid=$("projectGrid");
+  if(!projects.length){grid.innerHTML='<div class="empty">No properties listed yet. Please check back soon.</div>';return;}
+  grid.innerHTML=projects.map(p=>{
+    const photo=p.image_url || "";
+    const image=photo ? `<img src="${escapeHTML(photo)}" alt="${escapeHTML(p.name)}" loading="lazy">` : `<div style="height:220px;background:#eee9dd;display:grid;place-items:center;color:#8a6b2f;font-weight:700">MAAN PROPERTIES</div>`;
+    return `<article class="project-card">${image}<div class="project-content"><h3>${escapeHTML(p.name)}</h3><div class="location">📍 ${escapeHTML(p.location)}</div>${p.price?`<div class="price">${escapeHTML(p.price)}</div>`:""}<button class="btn btn-gold" style="margin-top:12px" type="button" data-details="${escapeHTML(p.id)}">Enquire / View Details</button>${isAdmin?`<div class="admin-card-actions"><button class="btn" type="button" data-edit="${escapeHTML(p.id)}">Edit</button><button class="btn" type="button" data-delete="${escapeHTML(p.id)}">Delete</button></div>`:""}</div></article>`;
   }).join("");
-  renderManageList();
+  grid.querySelectorAll("[data-details]").forEach(b=>b.addEventListener("click",()=>showProjectDetails(b.dataset.details)));
+  grid.querySelectorAll("[data-edit]").forEach(b=>b.addEventListener("click",()=>editProject(b.dataset.edit)));
+  grid.querySelectorAll("[data-delete]").forEach(b=>b.addEventListener("click",()=>deleteProject(b.dataset.delete)));
 }
-
-function showAdmin() {
-  openAdminPanel();
-  document.getElementById("loginBox").classList.remove("hidden");
+function showProjectDetails(id) {
+  const p=projects.find(item=>String(item.id)===String(id));
+  if(!p)return;
+  $("detailTitle").textContent=p.name||"Project Details";
+  const photo=p.image_url ? `<img class="detail-image" src="${escapeHTML(p.image_url)}" alt="${escapeHTML(p.name)}">` : `<div style="height:180px;background:#eee9dd;border-radius:10px;display:grid;place-items:center;color:#8a6b2f;font-weight:700;margin:8px 0 14px">MAAN PROPERTIES</div>`;
+  const hasMap=p.latitude!==null&&p.latitude!==undefined&&p.longitude!==null&&p.longitude!==undefined&&p.latitude!==""&&p.longitude!=="";
+  const mapLink=hasMap?`<div class="detail-meta"><a class="btn" href="https://www.google.com/maps?q=${encodeURIComponent(p.latitude+","+p.longitude)}" target="_blank" rel="noopener" style="display:inline-block;text-decoration:none">📍 View on Map</a></div>`:"";
+  $("detailContent").innerHTML=`${photo}<div class="detail-meta"><strong>📍 Location:</strong> ${escapeHTML(p.location||"Contact us for location details")}</div>${mapLink}${p.price?`<div class="price"><strong>Price:</strong> ${escapeHTML(p.price)}</div>`:""}<div class="detail-description">${escapeHTML(p.description||"Contact MAAN PROPERTIES for more project details, availability, and site visits.")}</div>`;
+  $("detailWhatsApp").href="https://wa.me/919893688819?text="+encodeURIComponent("Hello, I would like to enquire about "+p.name+". Please share more details.");
+  openModal("detailModal");
 }
-function showSettings() {
-  openAdminPanel();
-  document.getElementById("settingsBox").classList.remove("hidden");
+function updateMapCoordinates(){
+  const lat=$("projectLatitude").value, lng=$("projectLongitude").value;
+  $("mapCoordinates").textContent=(lat!==""&&lng!=="")?`Selected coordinates: ${Number(lat).toFixed(6)}, ${Number(lng).toFixed(6)}`:"No map point selected yet.";
 }
-function showUpload() {
-  openAdminPanel();
-  document.getElementById("uploadBox").classList.remove("hidden");
-  document.getElementById("projectName").focus();
+function setMapPoint(lat,lng,moveMap=true){
+  $("projectLatitude").value=Number(lat).toFixed(7); $("projectLongitude").value=Number(lng).toFixed(7);
+  if(locationMap){ if(locationMarker)locationMarker.setLatLng([lat,lng]); else locationMarker=L.marker([lat,lng]).addTo(locationMap); if(moveMap)locationMap.setView([lat,lng],16); }
+  updateMapCoordinates();
 }
-function openAdminPanel() {
-  document.getElementById("adminArea").classList.remove("hidden");
-  ["loginBox", "settingsBox", "uploadBox"].forEach(id =>
-    document.getElementById(id).classList.add("hidden")
-  );
-  document.getElementById("adminArea").scrollIntoView({behavior:"smooth"});
+function initLocationMap(){
+  if(locationMap){setTimeout(()=>locationMap.invalidateSize(),150);return;}
+  if(!window.L){$("mapCoordinates").textContent="Map library did not load. Check your internet connection and refresh.";return;}
+  locationMap=L.map("locationMap").setView([23.2599,77.4126],11);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:'&copy; OpenStreetMap contributors'}).addTo(locationMap);
+  locationMap.on("click",e=>setMapPoint(e.latlng.lat,e.latlng.lng,false));
+  if($("projectLatitude").value!==""&&$("projectLongitude").value!=="")setMapPoint($("projectLatitude").value,$("projectLongitude").value,true);
+  setTimeout(()=>locationMap.invalidateSize(),150);
 }
-function hideAdmin() {
-  document.getElementById("adminArea").classList.add("hidden");
-}
-function resetForm() {
-  document.getElementById("projectForm").reset();
-  document.getElementById("editId").value = "";
-  document.getElementById("formHeading").textContent = "Add a Project";
-}
-function renderManageList() {
-  const list = document.getElementById("manageList");
-  if (!list) return;
-  list.innerHTML = projects.map(project => `
-    <div style="border-bottom:1px solid #eee;padding:12px 0">
-      <strong>${safeText(project.name)}</strong>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
-        <button class="btn btn-small" onclick="editProject('${safeText(project.id)}')">Edit</button>
-        <button class="btn btn-small" onclick="deleteProject('${safeText(project.id)}')">Delete</button>
-      </div>
-    </div>`).join("") || "<p>No projects yet.</p>";
-}
-function editProject(id) {
-  const project = projects.find(item => item.id === id);
-  if (!project) return;
-  document.getElementById("editId").value = project.id;
-  document.getElementById("projectName").value = project.name;
-  document.getElementById("projectLocation").value = project.location;
-  document.getElementById("projectImage").value = project.image || "";
-  document.getElementById("projectDescription").value = project.description || "";
-  document.getElementById("projectPrice").value = project.price || "";
-  document.getElementById("formHeading").textContent = "Edit Project";
-  document.getElementById("uploadBox").classList.remove("hidden");
-  document.getElementById("uploadBox").scrollIntoView({behavior:"smooth"});
-}
-function deleteProject(id) {
-  const project = projects.find(item => item.id === id);
-  if (!project) return;
-  if (!confirm("Delete " + project.name + " from this device's project list?")) return;
-  projects = projects.filter(item => item.id !== id);
-  if (saveProjects()) renderProjects();
-}
-
-document.getElementById("projectForm").addEventListener("submit", function(event) {
-  event.preventDefault();
-  const oldId = document.getElementById("editId").value;
-  const project = {
-    id: oldId || ("project-" + Date.now()),
-    name: document.getElementById("projectName").value.trim(),
-    location: document.getElementById("projectLocation").value.trim(),
-    image: document.getElementById("projectImage").value.trim(),
-    description: document.getElementById("projectDescription").value.trim(),
-    price: document.getElementById("projectPrice").value.trim() || "Contact for pricing"
-  };
-  if (!project.name || !project.location) {
-    alert("Please enter the project name and location.");
-    return;
-  }
-  if (oldId) {
-    projects = projects.map(item => item.id === oldId ? project : item);
-  } else {
-    projects.push(project);
-  }
-  if (saveProjects()) {
-    renderProjects();
-    resetForm();
-    alert("Saved on this device. It is not yet saved to a cloud database.");
-  }
+$("mapSearchBtn").addEventListener("click",async()=>{
+  const query=$("mapSearch").value.trim(); if(!query){alert("Enter an address or place to search.");return;}
+  const btn=$("mapSearchBtn");btn.disabled=true;btn.textContent="Searching…";
+  try{const response=await fetch("https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q="+encodeURIComponent(query));if(!response.ok)throw new Error("Map search is unavailable right now.");const results=await response.json();if(!results.length)throw new Error("No matching place found. Try a nearby landmark or full address.");setMapPoint(Number(results[0].lat),Number(results[0].lon),true);}
+  catch(err){alert(err.message);}finally{btn.disabled=false;btn.textContent="Search";}
 });
-
-renderProjects();
-  async function uploadPropertyPhoto(file) {
-if (!file) return null;
-
-if (!file.type.startsWith("image/")) {
-alert("Please select an image file.");
-return null;
-}
-
-if (file.size > 5 * 1024 * 1024) {
-alert("Image must be smaller than 5 MB.");
-return null;
-}
-
-const { data: sessionData } =
-await supabaseClient.auth.getSession();
-
-if (!sessionData.session) {
-alert("Please log in as admin first.");
-return null;
-}
-
-const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, "");
-const filePath = Date.now() + "-" + safeName;
-
-const { data, error } = await supabaseClient.storage
-.from("Property-images")
-.upload(filePath, file, {
-cacheControl: "3600",
-upsert: false
-});
-
-if (error) {
-alert("Upload failed: " + error.message);
-return null;
-}
-
-const { data: urlData } = supabaseClient.storage
-.from("Property-images")
-.getPublicUrl(data.path);
-
-return urlData.publicUrl;
-  }
-</script>
-</body>
-</html>
+$("mapSearch").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();$("mapSearchBtn").click();}});
+$("clearMapLocation").addEventListener("click",()=>{$("projectLatitude").value="";$ ("projectLongitude").value="";if(locationMarker&&locationMap){locationMap.removeLayer(locationMarker);locationMarker=null;}updateMapCoordinates();});
+func
