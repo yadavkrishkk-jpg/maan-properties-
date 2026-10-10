@@ -307,7 +307,8 @@ footer a { color: var(--gold-light); }
 const SUPABASE_URL = "https://bhhptmzeniinvtcwuvfu.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_ZGEs96Mgejn1tRdCy7bnPA_STB7wFkT";
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
-</script></head>
+</script>
+</head>
 
 <body>
 <header class="topbar">
@@ -386,11 +387,23 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLI
       This is a browser-only demonstration. It does not provide secure administrator authentication or cloud storage. Do not use it to manage real customer data or expose confidential information.
     </div>
 
-    <div class="admin-box hidden" id="loginBox">
-      <h3>Admin access</h3>
-      <p>A secure login cannot be implemented safely with frontend code alone. Connect a proper authentication service before enabling real admin access.</p>
-      <button class="btn" onclick="hideAdmin()">Close</button>
+<div class="admin-box hidden" id="loginBox">
+  <h3>Admin Login</h3>
+  <form id="adminLoginForm">
+    <div class="field">
+      <label for="adminEmail">Email</label>
+      <input id="adminEmail" type="email" required placeholder="Admin email">
     </div>
+    <div class="field">
+      <label for="adminPassword">Password</label>
+      <input id="adminPassword" type="password" required placeholder="Admin password">
+    </div>
+    <button class="btn btn-gold" type="submit">Log In</button>
+    <p id="loginMessage" role="status"></p>
+  </form>
+  <button class="btn" type="button" onclick="hideAdmin()">Close</button>
+</div>
+    
 
     <div class="admin-box hidden" id="settingsBox">
       <h3>Website Settings</h3>
@@ -416,8 +429,9 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLI
           </div>
         </div>
         <div class="field">
-          <label for="projectImage">Photo URL</label>
-          <input id="projectImage" type="url" placeholder="https://...">
+  <label for="projectImage">Property Photo</label>
+<input id="projectImage" type="file" accept="image/jpeg,image/png,image/webp">
+          <p id="photoUploadStatus" role="status"></p>
         </div>
         <div class="field">
           <label for="projectDescription">Description</label>
@@ -615,6 +629,48 @@ document.getElementById("projectForm").addEventListener("submit", function(event
 });
 
 renderProjects();
+  async function uploadPropertyPhoto(file) {
+if (!file) return null;
+
+if (!file.type.startsWith("image/")) {
+alert("Please select an image file.");
+return null;
+}
+
+if (file.size > 5 * 1024 * 1024) {
+alert("Image must be smaller than 5 MB.");
+return null;
+}
+
+const { data: sessionData } =
+await supabaseClient.auth.getSession();
+
+if (!sessionData.session) {
+alert("Please log in as admin first.");
+return null;
+}
+
+const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, "");
+const filePath = Date.now() + "-" + safeName;
+
+const { data, error } = await supabaseClient.storage
+.from("Property-images")
+.upload(filePath, file, {
+cacheControl: "3600",
+upsert: false
+});
+
+if (error) {
+alert("Upload failed: " + error.message);
+return null;
+}
+
+const { data: urlData } = supabaseClient.storage
+.from("Property-images")
+.getPublicUrl(data.path);
+
+return urlData.publicUrl;
+  }
 </script>
 </body>
 </html>
