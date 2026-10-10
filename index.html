@@ -302,7 +302,12 @@ footer a { color: var(--gold-light); }
   .form-grid { grid-template-columns: 1fr; gap: 0; }
 }
 </style>
-</head>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "https://bhhptmzeniinvtcwuvfu.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_ZGEs96Mgejn1tRdCy7bnPA_STB7wFkT";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+</script></head>
 
 <body>
 <header class="topbar">
