@@ -1,80 +1,616 @@
 # maan-properties-
  MAAN PROPERTIES real estate website 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MAAN PROPERTIES | Find Your Place</title>
-<meta name="description" content="Explore residential plots and property projects with MAAN PROPERTIES.">
+<meta name="theme-color" content="#ffffff">
+<title>MAAN PROPERTIES | Real Estate</title>
+<meta name="description" content="Explore residential plots and real estate projects with MAAN PROPERTIES.">
+
 <style>
-:root{--gold:#bd9852;--ink:#252525;--muted:#686868;--cream:#f7f6f2}
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:#fff;line-height:1.6}
-header{display:flex;justify-content:space-between;align-items:center;padding:18px 7%;border-bottom:1px solid #eee;gap:16px}
-.brand{font-size:21px;font-weight:800;letter-spacing:1px}
-.brand span{color:var(--gold)}
-nav a{color:var(--ink);text-decoration:none;margin-left:18px;font-size:14px}
-.hero{padding:70px 7%;background:var(--cream);display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:35px}
-.eyebrow{color:#92743c;text-transform:uppercase;letter-spacing:3px;font-size:12px;font-weight:bold}
-h1{font-size:clamp(38px,5vw,64px);line-height:1.08;margin:15px 0}
-p{color:var(--muted)}
-.btn{display:inline-block;background:var(--ink);color:white;text-decoration:none;padding:13px 22px;border-radius:4px;margin-top:12px}
-.hero img{width:100%;height:330px;object-fit:cover;border-radius:6px}
-section{padding:55px 7%}
-.section-title{text-align:center;margin-bottom:30px}
-.section-title h2{font-size:32px;margin:5px}
-.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
-.card{border:1px solid #eee;border-radius:7px;overflow:hidden;background:#fff}
-.card img{width:100%;height:190px;object-fit:cover}
-.card-content{padding:18px}
-.card h3{margin:0}
-.tag{color:#92743c;font-size:12px;font-weight:bold;text-transform:uppercase}
-.features{background:var(--cream);display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:center}
-.feature{padding:15px}
-footer{background:var(--ink);color:white;text-align:center;padding:30px 7%}
-footer p{color:#ddd}
-@media(max-width:700px){header{padding:16px 5%;flex-wrap:wrap}nav{width:100%}nav a{margin:0 14px 0 0}.hero{grid-template-columns:1fr;padding:45px 6%}.hero img{height:230px}.cards{grid-template-columns:1fr}.features{grid-template-columns:repeat(2,1fr)}section{padding:42px 6%}}
+:root {
+  --gold: #b99856;
+  --gold-light: #e5d3a9;
+  --dark: #252525;
+  --muted: #737373;
+  --bg: #f8f8f6;
+  --border: #e8e5de;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--dark);
+  background: #fff;
+  line-height: 1.6;
+}
+a { color: inherit; }
+button, input, textarea, select { font: inherit; }
+button, .btn { cursor: pointer; }
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(255,255,255,.97);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 3px 18px #00000008;
+}
+.header-inner {
+  max-width: 1200px;
+  margin: auto;
+  padding: 15px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.brand {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.brand span { color: var(--gold); }
+.nav {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+}
+.nav a {
+  text-decoration: none;
+  color: #484848;
+  font-size: 14px;
+}
+.nav a:hover { color: var(--gold); }
+.actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid var(--border);
+  padding: 10px 14px;
+  border-radius: 5px;
+  text-decoration: none;
+  color: var(--dark);
+  background: white;
+  font-size: 13px;
+  font-weight: 600;
+}
+.btn:hover { border-color: var(--gold); }
+.btn-gold {
+  background: var(--gold);
+  color: white;
+  border-color: var(--gold);
+}
+.btn-dark {
+  background: var(--dark);
+  color: white;
+  border-color: var(--dark);
+}
+.btn-small { padding: 7px 10px; }
+.hero {
+  background: var(--bg);
+  padding: 64px 24px;
+}
+.hero-inner {
+  max-width: 1152px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+.eyebrow {
+  color: #96763d;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+h1 {
+  font-size: clamp(38px, 5vw, 62px);
+  line-height: 1.08;
+  letter-spacing: -1.8px;
+  margin: 16px 0;
+}
+h1 span { color: var(--gold); }
+p { color: var(--muted); }
+.hero p { max-width: 510px; font-size: 16px; }
+.hero-image {
+  width: 100%;
+  height: 380px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 18px 40px #00000012;
+}
+.hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 25px;
+}
+.section {
+  max-width: 1200px;
+  margin: auto;
+  padding: 65px 24px;
+}
+.section-heading { margin-bottom: 30px; }
+.section-heading h2 {
+  font-size: 32px;
+  margin: 7px 0;
+  letter-spacing: -.6px;
+}
+.heading-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+.project-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+  transition: transform .2s, box-shadow .2s;
+}
+.project-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px #0000000b;
+}
+.project-card img {
+  width: 100%;
+  height: 205px;
+  object-fit: cover;
+  background: #eee;
+}
+.project-body { padding: 20px; }
+.project-tag {
+  color: #99783f;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+.project-body h3 { margin: 7px 0; font-size: 21px; }
+.project-body p { font-size: 14px; }
+.project-location { font-size: 13px; color: #555; }
+.project-actions {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+.features {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.features-inner {
+  max-width: 1152px;
+  margin: auto;
+  padding: 38px 24px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.feature { text-align: center; padding: 10px; }
+.feature-icon { color: var(--gold); font-size: 27px; }
+.feature strong { display: block; margin-top: 6px; }
+.contact-panel {
+  background: var(--dark);
+  color: white;
+  border-radius: 8px;
+  padding: 35px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.contact-panel h2 { margin: 0; }
+.contact-panel p { color: #d1d1d1; }
+footer {
+  background: #1d1d1d;
+  color: white;
+  text-align: center;
+  padding: 35px 20px;
+}
+footer p { color: #ccc; font-size: 13px; }
+footer a { color: var(--gold-light); }
+.hidden { display: none !important; }
+.admin-area {
+  background: #f4f3ef;
+  border-top: 1px solid var(--border);
+  padding: 35px 20px;
+}
+.admin-inner { max-width: 900px; margin: auto; }
+.admin-box {
+  background: white;
+  border: 1px solid var(--border);
+  padding: 24px;
+  border-radius: 8px;
+  margin-top: 15px;
+}
+.field { margin-bottom: 15px; }
+.field label {
+  display: block;
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+.field input, .field textarea, .field select {
+  width: 100%;
+  border: 1px solid #d9d6ce;
+  border-radius: 5px;
+  padding: 12px;
+  background: white;
+}
+.field textarea { min-height: 85px; resize: vertical; }
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.notice {
+  padding: 12px;
+  background: #fff6df;
+  border: 1px solid #ead7a6;
+  border-radius: 5px;
+  font-size: 13px;
+  color: #66552f;
+}
+@media(max-width:850px) {
+  .header-inner { padding: 14px 18px; }
+  .nav { order: 3; width: 100%; gap: 18px; }
+  .hero-inner { gap: 25px; }
+  .hero-image { height: 300px; }
+  .project-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media(max-width:580px) {
+  .header-inner { gap: 12px; }
+  .brand { font-size: 19px; }
+  .actions { width: 100%; }
+  .actions .btn { flex: 1; padding: 9px 7px; font-size: 11px; }
+  .nav { justify-content: space-between; gap: 8px; }
+  .nav a { font-size: 12px; }
+  .hero { padding: 42px 19px; }
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-image { height: 230px; }
+  .section { padding: 45px 19px; }
+  .section-heading h2 { font-size: 27px; }
+  .project-grid { grid-template-columns: 1fr; }
+  .features-inner { grid-template-columns: repeat(2,1fr); padding: 25px 15px; }
+  .contact-panel { padding: 25px; }
+  .form-grid { grid-template-columns: 1fr; gap: 0; }
+}
 </style>
 </head>
+
 <body>
-<header>
-  <div class="brand">MAAN <span>PROPERTIES</span></div>
-  <nav><a href="#home">Home</a><a href="#projects">Projects</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
+<header class="topbar">
+  <div class="header-inner">
+    <a class="brand" href="#home">MAAN <span>PROPERTIES</span></a>
+
+    <nav class="nav">
+      <a href="#home">Home</a>
+      <a href="#projects">Projects</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <div class="actions">
+      <button class="btn" onclick="showAdmin()">Admin Login</button>
+      <button class="btn" onclick="showSettings()">⚙ Settings</button>
+      <button class="btn btn-gold" onclick="showUpload()">＋ Upload Project</button>
+    </div>
+  </div>
 </header>
+
 <main>
 <section class="hero" id="home">
-  <div>
-    <div class="eyebrow">A place to call your own</div>
-    <h1>Find the right place for your <span style="color:var(--gold)">future.</span></h1>
-    <p>Discover thoughtfully selected plots and property projects with MAAN PROPERTIES. Let us help you take the next step.</p>
-    <a class="btn" href="https://wa.me/919893688819?text=Hello%20MAAN%20PROPERTIES%2C%20I%20want%20to%20know%20about%20your%20projects.">Enquire on WhatsApp ↗</a>
-  </div>
-  <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1100&q=80" alt="Modern residential property">
-</section>
-<section id="projects">
-  <div class="section-title"><div class="eyebrow">Explore opportunities</div><h2>Featured Projects</h2><p>Find a property that fits your plans.</p></div>
-  <div class="cards">
-    <article class="card"><img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80" alt="Green open land"><div class="card-content"><div class="tag">Residential plots</div><h3>Green Park Estate</h3><p>Ganeshpura Road · Contact us for availability and pricing.</p><a href="https://wa.me/919893688819?text=I%20am%20interested%20in%20Green%20Park%20Estate." class="btn">Enquire now</a></div></article>
-    <article class="card"><img src="https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=800&q=80" alt="Modern architecture"><div class="card-content"><div class="tag">Property project</div><h3>Coming Soon</h3><p>Contact our team to learn about upcoming opportunities.</p><a href="https://wa.me/919893688819" class="btn">Know more</a></div></article>
-    <article class="card"><img src="https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?auto=format&fit=crop&w=800&q=80" alt="Residential neighbourhood"><div class="card-content"><div class="tag">New opportunities</div><h3>Upcoming Projects</h3><p>Get in touch for the latest property updates.</p><a href="https://wa.me/919893688819" class="btn">Contact us</a></div></article>
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">Your property journey starts here</div>
+      <h1>Find a place for your <span>future.</span></h1>
+      <p>Explore residential plots and property opportunities with MAAN PROPERTIES. Get clear project information and connect with our team directly.</p>
+      <div class="hero-buttons">
+        <a class="btn btn-dark" href="#projects">Explore Projects →</a>
+        <a class="btn btn-gold" href="https://wa.me/919893688819?text=Hello%20MAAN%20PROPERTIES%2C%20please%20share%20your%20project%20details.">WhatsApp Enquiry</a>
+      </div>
+    </div>
+    <img class="hero-image" src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=85" alt="Modern residential property">
   </div>
 </section>
+
+<section class="section" id="projects">
+  <div class="heading-row">
+    <div class="section-heading">
+      <div class="eyebrow">Discover properties</div>
+      <h2>Our Projects</h2>
+      <p>Explore available properties and enquire for details.</p>
+    </div>
+  </div>
+  <div class="project-grid" id="projectGrid"></div>
+</section>
+
 <section class="features" id="about">
-  <div class="feature"><strong>✓</strong><br>Property Guidance</div>
-  <div class="feature"><strong>⌖</strong><br>Location Details</div>
-  <div class="feature"><strong>◇</strong><br>Project Information</div>
-  <div class="feature"><strong>↗</strong><br>Direct Enquiries</div>
+  <div class="features-inner">
+    <div class="feature"><div class="feature-icon">⌂</div><strong>Property Guidance</strong><p>Information to help you choose.</p></div>
+    <div class="feature"><div class="feature-icon">◎</div><strong>Location Details</strong><p>Understand the project location.</p></div>
+    <div class="feature"><div class="feature-icon">◇</div><strong>Project Information</strong><p>Ask us about availability.</p></div>
+    <div class="feature"><div class="feature-icon">↗</div><strong>Direct Enquiries</strong><p>Contact our team directly.</p></div>
+  </div>
+</section>
+
+<section class="section" id="contact">
+  <div class="contact-panel">
+    <div>
+      <div class="eyebrow">Let's talk</div>
+      <h2>Looking for a property?</h2>
+      <p>Contact MAAN PROPERTIES to learn about our projects.</p>
+      <p>Phone: 9893688819<br>Email: yogeshyadav5182@gmail.com</p>
+    </div>
+    <a class="btn btn-gold" href="https://wa.me/919893688819?text=Hello%20MAAN%20PROPERTIES">Chat on WhatsApp ↗</a>
+  </div>
 </section>
 </main>
-<footer id="contact">
-  <div class="brand">MAAN <span>PROPERTIES</span></div>
-  <p>Helping you find your next opportunity.</p>
-  <p>Phone: 9893688819</p>
-  <p>Email: yogeshyadav5182@gmail.com</p>
-  <a class="btn" href="https://wa.me/919893688819">Contact us on WhatsApp</a>
-  <p style="font-size:12px;margin-top:25px">© 2026 MAAN PROPERTIES</p>
+
+<section class="admin-area hidden" id="adminArea">
+  <div class="admin-inner">
+    <div class="eyebrow">Management preview</div>
+    <h2 id="adminHeading">Project Management</h2>
+    <div class="notice">
+      This is a browser-only demonstration. It does not provide secure administrator authentication or cloud storage. Do not use it to manage real customer data or expose confidential information.
+    </div>
+
+    <div class="admin-box hidden" id="loginBox">
+      <h3>Admin access</h3>
+      <p>A secure login cannot be implemented safely with frontend code alone. Connect a proper authentication service before enabling real admin access.</p>
+      <button class="btn" onclick="hideAdmin()">Close</button>
+    </div>
+
+    <div class="admin-box hidden" id="settingsBox">
+      <h3>Website Settings</h3>
+      <p>MAAN PROPERTIES</p>
+      <p>Theme: White, Charcoal & Gold</p>
+      <p>Contact: 9893688819</p>
+      <p>Email: yogeshyadav5182@gmail.com</p>
+      <button class="btn" onclick="hideAdmin()">Close settings</button>
+    </div>
+
+    <div class="admin-box hidden" id="uploadBox">
+      <h3 id="formHeading">Add a Project</h3>
+      <form id="projectForm">
+        <input type="hidden" id="editId">
+        <div class="form-grid">
+          <div class="field">
+            <label for="projectName">Project Name *</label>
+            <input id="projectName" required placeholder="e.g. Green Park Estate">
+          </div>
+          <div class="field">
+            <label for="projectLocation">Location *</label>
+            <input id="projectLocation" required placeholder="Project location">
+          </div>
+        </div>
+        <div class="field">
+          <label for="projectImage">Photo URL</label>
+          <input id="projectImage" type="url" placeholder="https://...">
+        </div>
+        <div class="field">
+          <label for="projectDescription">Description</label>
+          <textarea id="projectDescription" placeholder="Describe the property and facilities"></textarea>
+        </div>
+        <div class="field">
+          <label for="projectPrice">Price / Price information</label>
+          <input id="projectPrice" placeholder="Contact for pricing">
+        </div>
+        <button class="btn btn-gold" type="submit">Save Project on This Device</button>
+        <button class="btn" type="button" onclick="resetForm()">Cancel</button>
+      </form>
+    </div>
+
+    <div class="admin-box">
+      <h3>Manage this device's project list</h3>
+      <p>Use Upload Project to add listings. Editing or deleting here only changes this browser's saved copy.</p>
+      <div id="manageList"></div>
+      <button class="btn" onclick="hideAdmin()">Close dashboard</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <a class="brand" href="#home">MAAN <span>PROPERTIES</span></a>
+  <p>Helping you find your next property opportunity.</p>
+  <p>Phone: 9893688819 · Email: yogeshyadav5182@gmail.com</p>
+  <p>© 2026 MAAN PROPERTIES. All rights reserved.</p>
 </footer>
+
+<script>
+const STORAGE_KEY = "maan_properties_projects_v1";
+
+const starterProjects = [
+  {
+    id: "green-park",
+    name: "Green Park Estate",
+    location: "Ganeshpura Road",
+    description: "Residential plots. Contact us for location details, facilities, availability and pricing.",
+    price: "Contact for pricing",
+    image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=900&q=80"
+  }
+];
+
+let projects = loadProjects();
+
+function loadProjects() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    return saved ? JSON.parse(saved) : [...starterProjects];
+  } catch (error) {
+    return [...starterProjects];
+  }
+}
+
+function saveProjects() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
+    return true;
+  } catch (error) {
+    alert("Could not save on this device. Check browser storage.");
+    return false;
+  }
+}
+
+function safeText(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;",
+    '"': "&quot;", "'": "&#39;"
+  })[char]);
+}
+
+function renderProjects() {
+  const grid = document.getElementById("projectGrid");
+  if (!projects.length) {
+    grid.innerHTML = "<p>No projects have been added yet.</p>";
+    renderManageList();
+    return;
+  }
+
+  grid.innerHTML = projects.map(project => {
+    const name = safeText(project.name);
+    const location = safeText(project.location);
+    const description = safeText(project.description);
+    const price = safeText(project.price || "Contact for pricing");
+    const image = /^https?:\/\//i.test(project.image || "")
+      ? safeText(project.image)
+      : "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=900&q=80";
+
+    const message = encodeURIComponent("Hello MAAN PROPERTIES, I am interested in " + project.name + ".");
+    return `
+      <article class="project-card">
+        <img src="${image}" alt="${name}" loading="lazy">
+        <div class="project-body">
+          <div class="project-tag">Property Project</div>
+          <h3>${name}</h3>
+          <div class="project-location">⌖ ${location}</div>
+          <p>${description}</p>
+          <strong>${price}</strong>
+          <div class="project-actions">
+            <a class="btn btn-dark" href="https://wa.me/919893688819?text=${message}">Enquire now ↗</a>
+          </div>
+        </div>
+      </article>`;
+  }).join("");
+  renderManageList();
+}
+
+function showAdmin() {
+  openAdminPanel();
+  document.getElementById("loginBox").classList.remove("hidden");
+}
+function showSettings() {
+  openAdminPanel();
+  document.getElementById("settingsBox").classList.remove("hidden");
+}
+function showUpload() {
+  openAdminPanel();
+  document.getElementById("uploadBox").classList.remove("hidden");
+  document.getElementById("projectName").focus();
+}
+function openAdminPanel() {
+  document.getElementById("adminArea").classList.remove("hidden");
+  ["loginBox", "settingsBox", "uploadBox"].forEach(id =>
+    document.getElementById(id).classList.add("hidden")
+  );
+  document.getElementById("adminArea").scrollIntoView({behavior:"smooth"});
+}
+function hideAdmin() {
+  document.getElementById("adminArea").classList.add("hidden");
+}
+function resetForm() {
+  document.getElementById("projectForm").reset();
+  document.getElementById("editId").value = "";
+  document.getElementById("formHeading").textContent = "Add a Project";
+}
+function renderManageList() {
+  const list = document.getElementById("manageList");
+  if (!list) return;
+  list.innerHTML = projects.map(project => `
+    <div style="border-bottom:1px solid #eee;padding:12px 0">
+      <strong>${safeText(project.name)}</strong>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+        <button class="btn btn-small" onclick="editProject('${safeText(project.id)}')">Edit</button>
+        <button class="btn btn-small" onclick="deleteProject('${safeText(project.id)}')">Delete</button>
+      </div>
+    </div>`).join("") || "<p>No projects yet.</p>";
+}
+function editProject(id) {
+  const project = projects.find(item => item.id === id);
+  if (!project) return;
+  document.getElementById("editId").value = project.id;
+  document.getElementById("projectName").value = project.name;
+  document.getElementById("projectLocation").value = project.location;
+  document.getElementById("projectImage").value = project.image || "";
+  document.getElementById("projectDescription").value = project.description || "";
+  document.getElementById("projectPrice").value = project.price || "";
+  document.getElementById("formHeading").textContent = "Edit Project";
+  document.getElementById("uploadBox").classList.remove("hidden");
+  document.getElementById("uploadBox").scrollIntoView({behavior:"smooth"});
+}
+function deleteProject(id) {
+  const project = projects.find(item => item.id === id);
+  if (!project) return;
+  if (!confirm("Delete " + project.name + " from this device's project list?")) return;
+  projects = projects.filter(item => item.id !== id);
+  if (saveProjects()) renderProjects();
+}
+
+document.getElementById("projectForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+  const oldId = document.getElementById("editId").value;
+  const project = {
+    id: oldId || ("project-" + Date.now()),
+    name: document.getElementById("projectName").value.trim(),
+    location: document.getElementById("projectLocation").value.trim(),
+    image: document.getElementById("projectImage").value.trim(),
+    description: document.getElementById("projectDescription").value.trim(),
+    price: document.getElementById("projectPrice").value.trim() || "Contact for pricing"
+  };
+  if (!project.name || !project.location) {
+    alert("Please enter the project name and location.");
+    return;
+  }
+  if (oldId) {
+    projects = projects.map(item => item.id === oldId ? project : item);
+  } else {
+    projects.push(project);
+  }
+  if (saveProjects()) {
+    renderProjects();
+    resetForm();
+    alert("Saved on this device. It is not yet saved to a cloud database.");
+  }
+});
+
+renderProjects();
+</script>
 </body>
 </html>
