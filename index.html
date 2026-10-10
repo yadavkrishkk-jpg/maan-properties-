@@ -100,7 +100,12 @@ function escapeHTML(value="") {
 function openModal(id){ $(id).classList.remove("hidden"); }
 function closeModal(id){ $(id).classList.add("hidden"); }
 document.querySelectorAll("[data-close]").forEach(b => b.addEventListener("click",()=>closeModal(b.dataset.close)));
-$("adminOpenBtn").addEventListener("click",()=>{setStatus("loginStatus","");openModal("loginModal");});
+$("adminOpenBtn").addEventListener("click",()=>{
+  const modal=$("loginModal");
+  if(!modal){alert("Login form is missing from this page. Please check the latest index.html deployment.");return;}
+  setStatus("loginStatus","");
+  modal.classList.remove("hidden");
+});
 $("dashboardBtn").addEventListener("click",()=>{document.querySelector("#projects").scrollIntoView({behavior:"smooth"});});
 $("addProjectBtn").addEventListener("click",()=>openProjectForm());
 $("logoutBtn").addEventListener("click",async()=>{await supabaseClient.auth.signOut();});
@@ -174,5 +179,79 @@ $("mapSearchBtn").addEventListener("click",async()=>{
   catch(err){alert(err.message);}finally{btn.disabled=false;btn.textContent="Search";}
 });
 $("mapSearch").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();$("mapSearchBtn").click();}});
-$("clearMapLocation").addEventListener("click",()=>{$("projectLatitude").value="";$ ("projectLongitude").value="";if(locationMarker&&locationMap){locationMap.removeLayer(locationMarker);locationMarker=null;}updateMapCoordinates();});
-func
+$("clearMapLocation").addEventListener("click",()=>{$("projectLatitude").value="";$("projectLongitude").value="";if(locationMarker&&locationMap){locationMap.removeLayer(locationMarker);locationMarker=null;}updateMapCoordinates();});
+function openProjectForm(p=null) {
+  $("projectForm").reset(); $("projectId").value=p?.id||"";
+  $("projectName").value=p?.name||""; $("projectLocation").value=p?.location||"";
+  $("projectLatitude").value=p?.latitude??""; $("projectLongitude").value=p?.longitude??""; updateMapCoordinates();
+  $("projectPrice").value=p?.price||""; $("projectDescription").value=p?.description||"";
+  $("projectModalTitle").textContent=p?"Edit Property":"Add Property";
+  $("saveProjectBtn").textContent=p?"Save Changes":"Save Property";
+  setStatus("projectStatus",p?.image_url?"Current photo will be kept unless you choose another.":"");
+  openModal("projectModal");
+  setTimeout(initLocationMap,100);
+}
+function editProject(id){if(!isAdmin)return;const p=projects.find(x=>String(x.id)===String(id));if(p)openProjectForm(p);}
+async function deleteProject(id) {
+  if(!isAdmin)return;
+  const p=projects.find(x=>String(x.id)===String(id));if(!p)return;
+  if(!confirm(`Delete "${p.name}"? This cannot be undone.`))return;
+  const {error}=await supabaseClient.from(TABLE_NAME).delete().eq("id",id);
+  if(error){alert("Delete failed: "+error.message);return;}
+  await loadProjects();
+}
+async function uploadPhoto(file) {
+  if(!file)return null;
+  if(!["image/jpeg","image/png","image/webp"].includes(file.type)){throw new Error("Please select a JPG, PNG, or WebP image.");}
+  if(file.size>5*1024*1024){throw new Error("Image must be smaller than 5 MB.");}
+  const {data:sessionData}=await supabaseClient.auth.getSession();
+  if(!sessionData.session)throw new Error("Please sign in as admin first.");
+  const safeName=file.name.replace(/[^a-zA-Z0-9._-]/g,"-");
+  const path=Date.now()+"-"+crypto.randomUUID()+"-"+safeName;
+  const {data,error}=await supabaseClient.storage.from(STORAGE_BUCKET).upload(path,file,{cacheControl:"3600",upsert:false});
+  if(error)throw error;
+  const {data:urlData}=supabaseClient.storage.from(STORAGE_BUCKET).getPublicUrl(data.path);
+  return urlData.publicUrl;
+}
+$("loginForm").addEventListener("submit",async e=>{
+  e.preventDefault();const button=e.submitter;button.disabled=true;setStatus("loginStatus","Signing in…");
+  try{
+    const {data,error}=await supabaseClient.auth.signInWithPassword({email:$("adminEmail").value.trim(),password:$("adminPassword").value});
+    if(error)throw error;
+    closeModal("loginModal");$("loginForm").reset();setStatus("loginStatus","");
+    updateAdminUI(data.session);await loadProjects();
+  }catch(err){setStatus("loginStatus","Login failed: "+err.message,"error");}
+  finally{button.disabled=false;}
+});
+$("projectForm").addEventListener("submit",async e=>{
+  e.preventDefault();if(!isAdmin){setStatus("projectStatus","Please sign in first.","error");return;}
+  const button=$("saveProjectBtn");button.disabled=true;setStatus("projectStatus","Saving property…");
+  try{
+    const id=$("projectId").value||null;
+    const {data:sessionData}=await supabaseClient.auth.getSession();
+    if(!sessionData.session)throw new Error("Your session has expired. Please log in again.");
+    let image_url=null;
+    const existing=projects.find(p=>String(p.id)===String(id));
+    image_url=existing?.image_url||null;
+    const file=$("projectImage").files[0];
+    if(file)image_url=await uploadPhoto(file);
+    const latValue=$("projectLatitude").value, lngValue=$("projectLongitude").value;
+    const record={name:$("projectName").value.trim(),location:$("projectLocation").value.trim(),latitude:latValue===""?null:Number(latValue),longitude:lngValue===""?null:Number(lngValue),price:$("projectPrice").value.trim(),description:$("projectDescription").value.trim(),image_url};
+    if(!record.name||!record.location)throw new Error("Project name and location are required.");
+    const result=id
+      ? await supabaseClient.from(TABLE_NAME).update(record).eq("id",id).select().single()
+      : await supabaseClient.from(TABLE_NAME).insert(record).select().single();
+    if(result.error)throw result.error;
+    closeModal("projectModal");await loadProjects();
+  }catch(err){setStatus("projectStatus","Could not save: "+err.message,"error");}
+  finally{button.disabled=false;}
+});
+supabaseClient.auth.onAuthStateChange((_event,session)=>{updateAdminUI(session);});
+(async()=>{
+  const {data:{session}}=await supabaseClient.auth.getSession();
+  updateAdminUI(session);
+  await loadProjects();
+})();
+</script>
+</body>
+</html>
