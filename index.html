@@ -1,0 +1,80 @@
+# maan-properties-
+ MAAN PROPERTIES real estate website 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MAAN PROPERTIES | Find Your Place</title>
+<meta name="description" content="Explore residential plots and property projects with MAAN PROPERTIES.">
+<style>
+:root{--gold:#bd9852;--ink:#252525;--muted:#686868;--cream:#f7f6f2}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:#fff;line-height:1.6}
+header{display:flex;justify-content:space-between;align-items:center;padding:18px 7%;border-bottom:1px solid #eee;gap:16px}
+.brand{font-size:21px;font-weight:800;letter-spacing:1px}
+.brand span{color:var(--gold)}
+nav a{color:var(--ink);text-decoration:none;margin-left:18px;font-size:14px}
+.hero{padding:70px 7%;background:var(--cream);display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:35px}
+.eyebrow{color:#92743c;text-transform:uppercase;letter-spacing:3px;font-size:12px;font-weight:bold}
+h1{font-size:clamp(38px,5vw,64px);line-height:1.08;margin:15px 0}
+p{color:var(--muted)}
+.btn{display:inline-block;background:var(--ink);color:white;text-decoration:none;padding:13px 22px;border-radius:4px;margin-top:12px}
+.hero img{width:100%;height:330px;object-fit:cover;border-radius:6px}
+section{padding:55px 7%}
+.section-title{text-align:center;margin-bottom:30px}
+.section-title h2{font-size:32px;margin:5px}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.card{border:1px solid #eee;border-radius:7px;overflow:hidden;background:#fff}
+.card img{width:100%;height:190px;object-fit:cover}
+.card-content{padding:18px}
+.card h3{margin:0}
+.tag{color:#92743c;font-size:12px;font-weight:bold;text-transform:uppercase}
+.features{background:var(--cream);display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:center}
+.feature{padding:15px}
+footer{background:var(--ink);color:white;text-align:center;padding:30px 7%}
+footer p{color:#ddd}
+@media(max-width:700px){header{padding:16px 5%;flex-wrap:wrap}nav{width:100%}nav a{margin:0 14px 0 0}.hero{grid-template-columns:1fr;padding:45px 6%}.hero img{height:230px}.cards{grid-template-columns:1fr}.features{grid-template-columns:repeat(2,1fr)}section{padding:42px 6%}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">MAAN <span>PROPERTIES</span></div>
+  <nav><a href="#home">Home</a><a href="#projects">Projects</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
+</header>
+<main>
+<section class="hero" id="home">
+  <div>
+    <div class="eyebrow">A place to call your own</div>
+    <h1>Find the right place for your <span style="color:var(--gold)">future.</span></h1>
+    <p>Discover thoughtfully selected plots and property projects with MAAN PROPERTIES. Let us help you take the next step.</p>
+    <a class="btn" href="https://wa.me/919893688819?text=Hello%20MAAN%20PROPERTIES%2C%20I%20want%20to%20know%20about%20your%20projects.">Enquire on WhatsApp ↗</a>
+  </div>
+  <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1100&q=80" alt="Modern residential property">
+</section>
+<section id="projects">
+  <div class="section-title"><div class="eyebrow">Explore opportunities</div><h2>Featured Projects</h2><p>Find a property that fits your plans.</p></div>
+  <div class="cards">
+    <article class="card"><img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80" alt="Green open land"><div class="card-content"><div class="tag">Residential plots</div><h3>Green Park Estate</h3><p>Ganeshpura Road · Contact us for availability and pricing.</p><a href="https://wa.me/919893688819?text=I%20am%20interested%20in%20Green%20Park%20Estate." class="btn">Enquire now</a></div></article>
+    <article class="card"><img src="https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=800&q=80" alt="Modern architecture"><div class="card-content"><div class="tag">Property project</div><h3>Coming Soon</h3><p>Contact our team to learn about upcoming opportunities.</p><a href="https://wa.me/919893688819" class="btn">Know more</a></div></article>
+    <article class="card"><img src="https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?auto=format&fit=crop&w=800&q=80" alt="Residential neighbourhood"><div class="card-content"><div class="tag">New opportunities</div><h3>Upcoming Projects</h3><p>Get in touch for the latest property updates.</p><a href="https://wa.me/919893688819" class="btn">Contact us</a></div></article>
+  </div>
+</section>
+<section class="features" id="about">
+  <div class="feature"><strong>✓</strong><br>Property Guidance</div>
+  <div class="feature"><strong>⌖</strong><br>Location Details</div>
+  <div class="feature"><strong>◇</strong><br>Project Information</div>
+  <div class="feature"><strong>↗</strong><br>Direct Enquiries</div>
+</section>
+</main>
+<footer id="contact">
+  <div class="brand">MAAN <span>PROPERTIES</span></div>
+  <p>Helping you find your next opportunity.</p>
+  <p>Phone: 9893688819</p>
+  <p>Email: yogeshyadav5182@gmail.com</p>
+  <a class="btn" href="https://wa.me/919893688819">Contact us on WhatsApp</a>
+  <p style="font-size:12px;margin-top:25px">© 2026 MAAN PROPERTIES</p>
+</footer>
+</body>
+</html>
